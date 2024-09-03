@@ -7,13 +7,27 @@
 
 import UIKit
 
-class Person: NSObject {
+class Person: NSObject, NSSecureCoding {
+    
+    static var supportsSecureCoding: Bool =  true
+    
     var name: String
     var image: String
     
     init(name: String, image: String) {
         self.name = name
         self.image = image
+    }
+    
+    // init method called with NSKeyedUnarchiver
+    required init?(coder: NSCoder) {
+        name = coder.decodeObject(forKey: "name") as? String ?? ""
+        image = coder.decodeObject(forKey: "image") as? String ?? ""
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: "name")
+        coder.encode(image, forKey: "image")
     }
     
 }
